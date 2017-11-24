@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @GetMapping
-    public String index() { return "index.html"; }
+    public String index() { return "index2.html"; }
 
 }
