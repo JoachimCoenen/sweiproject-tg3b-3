@@ -1,0 +1,19 @@
+<div class="modal-header">
+	<h1>{{activity.title}}</h1>
+</div>
+<div class="modal-body">
+	<p>
+		Title <output ng-model="activity.title" size="40"/>
+	</p>
+	<p>
+		Text <output ng-model="activity.text" size="100"/>
+	</p>
+	<p>
+		Tags <output ng-model="activity.tags" size="40"/>
+	</p>
+</div>
+<div class="modal-footer">
+	<button class="mdl-button dangerous" ng-click="delete(activity)" style=".buttonDangerous">Delete</button>
+	<button class="mdl-button" ng-click="edit(activity)">Edit</button>
+	<button class="mdl-button" ng-click="close()">Close</button>
+</div>
