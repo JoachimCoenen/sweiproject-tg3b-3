@@ -24,7 +24,7 @@ function loadActivities ($scope, $http){
 		  
 	var viewActivityDialogOptions = {
 		controller: 'ViewActivityCtrl',
-		templateUrl: './activityDetails.html'
+		templateUrl: './templates/activityDetails.html'
 	};
 
 	$scope.viewActivity = function(activity){
@@ -35,7 +35,7 @@ function loadActivities ($scope, $http){
 		  
 	var addDialogOptions = {
 		controller: 'AddActivityCtrl',
-		templateUrl: './activityAdd.html'
+		templateUrl: './templates/activityAdd.html'
 	};
 
 	$scope.add = function(activity){
@@ -46,7 +46,7 @@ function loadActivities ($scope, $http){
 
 	var editDialogOptions = {
 		controller: 'EditActivityCtrl',
-		templateUrl: './activityEdit.html',
+		templateUrl: './templates/activityEdit.html',
 	};
 	$scope.edit = function(activity){
 		var activityToEdit = activity;
