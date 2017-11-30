@@ -19,16 +19,12 @@
 			<td class="mdl-data-table__cell--non-numeric">Tags: </td>
 			<td class="mdl-data-table__cell--non-numeric">{{activity.tags}}</td>
 		</tr>
-		<tr>
-			<td class="mdl-data-table__cell--non-numeric">Description: </td>
-			<td class="mdl-data-table__cell--non-numeric">{{activity.text}}</td>
-		</tr>
 	</table>
 			
 	
 </div>
 <div class="modal-footer">
-	<button class="mdl-button dangerous" ng-click="delete(activity)" style=".buttonDangerous">Delete</button>
+	<button class="mdl-button dangerous" ng-click="delete(activity)">Delete</button>
 	<button class="mdl-button" ng-click="edit(activity)">Edit</button>
 	<button class="mdl-button" ng-click="close()">Close</button>
 </div>
