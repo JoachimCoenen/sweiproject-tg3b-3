@@ -36,7 +36,7 @@ public class ActivityControllerTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testUpdateNotNull() {
-		assertNull(new ActivityController().update(ID, new Activity()));
+		assertNotNull(new ActivityController().update(ID, new Activity()));
 	}
 
 }
