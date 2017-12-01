@@ -13,21 +13,29 @@ import com.openpojo.validation.test.impl.SetterTester;
 
 public class ActivityTest {
 
-  @Test
-  public void validateSettersAndGetters() {
+	private static final String TEXT = "text";
+	private static final String TAGS = "tags";
+	private static final String TITLE = "title";
 
+	@Test
+	public void validateSettersAndGetters() {
 
-    PojoClass activityPojo = PojoClassFactory.getPojoClass(Activity.class);
+		PojoClass activityPojo = PojoClassFactory.getPojoClass(Activity.class);
 
+		Validator validator = ValidatorBuilder.create()
+				// Lets make sure that we have a getter and a setter for every field defined.
+				.with(new SetterMustExistRule()).with(new GetterMustExistRule())
 
-    Validator validator = ValidatorBuilder.create()
-        // Lets make sure that we have a getter and a setter for every field defined.
-        .with(new SetterMustExistRule()).with(new GetterMustExistRule())
+				// Lets also validate that they are behaving as expected
+				.with(new SetterTester()).with(new GetterTester()).build();
 
-        // Lets also validate that they are behaving as expected
-        .with(new SetterTester()).with(new GetterTester()).build();
+		// Start the Test
+		validator.validate(activityPojo);
+	}
 
-    // Start the Test
-    validator.validate(activityPojo);
-  }
+	@Test
+	public void testConstructor() {
+		new Activity(TEXT, TAGS, TITLE);
+	}
+
 }
