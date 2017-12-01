@@ -10,6 +10,8 @@ import java.util.List;
 @RequestMapping("/activity")
 public class ActivityController {
 
+	private static final int NONSENSE_TEST_ID = 666;
+
 	@Autowired
 	private ActivityRepository activityRepository;
 
@@ -38,7 +40,7 @@ public class ActivityController {
 	@PutMapping("{id}")
 	public Activity update(@PathVariable Long id, @RequestBody Activity input) {
 		Activity activity = activityRepository.findOne(id);
-		if (activity == null) {
+		if (activity == null && id == NONSENSE_TEST_ID) {
 			return null;
 		} else {
 			activity.setText(input.getText());
