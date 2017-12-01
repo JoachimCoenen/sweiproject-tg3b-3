@@ -16,7 +16,7 @@ public class Activity {
 	private String title;
 
 	public Activity() {
-	};
+	}
 
 	public Activity(String text, String tags, String title) {
 		this.text = text;
