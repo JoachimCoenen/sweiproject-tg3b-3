@@ -16,7 +16,7 @@ public class ActivityController {
 	@GetMapping
 	public List<Activity> listAll() {
 		ArrayList<Activity> activities = new ArrayList<>();
-		activityRepository.findAll().forEach(activities::add);// forEach(activity -> activities.add(activity));
+		activityRepository.findAll().forEach(activities::add);
 		return activities;
 	}
 
