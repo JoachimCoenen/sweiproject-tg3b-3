@@ -26,7 +26,7 @@ and respond with a link:/understanding/JSON[JSON] representation of a greeting:
 [source,json]
 -----
 {"id":1,"content":"Hello, World!"}
--------
+-----
 
 You can customize the greeting with an optional `name` parameter in the query string:
 
