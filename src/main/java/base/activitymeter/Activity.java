@@ -1,24 +1,32 @@
 package base.activitymeter;
 
+import java.util.ArrayList;
+import java.util.*;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Activity {
 
 	@Id
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String text;
-	private String tags;
+	@ManyToMany
+	private Set<Tag> tags;// = new HashSet<Tag>();
 	private String title;
 
 	public Activity() {
+		tags = new HashSet<Tag>();
 	}
 
-	public Activity(String text, String tags, String title) {
+	public Activity(String text, Set<Tag> tags, String title) {
 		this.text = text;
 		this.tags = tags;
 		this.title = title;
@@ -40,12 +48,13 @@ public class Activity {
 		this.text = text;
 	}
 
-	public String getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(String tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
+		//this.tags.addAll(tags);
 	}
 
 	public String getTitle() {

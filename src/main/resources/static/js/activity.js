@@ -1,4 +1,16 @@
 
+
+function tagsToList (tagsString) {
+	tagsList = tagsString.split(",");
+	tagsList = tagsList.map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
+	return tagsList;
+}
+
+function tagsToString (tagsList) {
+	return tagsList.join(", ");
+}
+
+
 function loadActivities ($scope, $http){
 	return $http({
 		 method : 'GET',
@@ -7,17 +19,30 @@ function loadActivities ($scope, $http){
 				'http://localhost:8080/activity' :
 				'https://activityexample.herokuapp.com/activity')
 		 */
-		 url: 'activity'
+		 url: 'tag'
 				
 		}).then(function (response) {
-			 $scope.activities = response.data;
+			 $scope.allTags = response.data;
+	}).then(function () {
+		$http({
+			 method : 'GET',
+			 /*
+			 url: (window.location.hostname === 'localhost' ?
+					'http://localhost:8080/activity' :
+					'https://activityexample.herokuapp.com/activity')
+			 */
+			 url: 'activity'
+					
+			}).then(function (response) {
+				 $scope.activities = response.data;
+		});
 	});
 }
 
 function loadActivity (activityId, $scope, $http){
 	return $http({
 		 method : 'GET',
-		url: 'activity/' + $scope.activity.id
+		url: 'activity/' + $scope.activityId
 		}).then(function (response) {
 			 $scope.activity = response.data;
 	});
@@ -117,7 +142,7 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
 		url: 'activity' ,
 		data: {
 				text: $scope.activity.text,
-				tags: $scope.activity.tags,
+				tags: tagsToList($scope.activity.tags),
 				title: $scope.activity.title
 			  }
 		}  
