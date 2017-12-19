@@ -7,7 +7,7 @@ function tagsToList (tagsString) {
 }
 
 function tagsToString (tagsList) {
-	return tagsList.join(", ");
+	return tagsList.map(function(tag) { return tag.name; }).join(", ");
 }
 
 
@@ -65,8 +65,9 @@ var editDialogOptions = {
 	templateUrl: './templates/activityEdit.html',
 };
 function editActivity_bare(activity, $scope, $http, $dialog) {
-	var activityToEdit = activity;
-	return $dialog.dialog(angular.extend(editDialogOptions, {resolve: {activity: angular.copy(activityToEdit)}})).open().then(function (){
+	var activityToEdit = angular.copy(activity);
+	activityToEdit.tags = tagsToString(activityToEdit.tags);
+	return $dialog.dialog(angular.extend(editDialogOptions, {resolve: {activity: activityToEdit}})).open().then(function (){
 		loadActivities($scope, $http);
 	});
 };
@@ -167,7 +168,7 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 		url: 'activity/' + $scope.activity.id,
 		data: {
 				text: $scope.activity.text,
-				tags: $scope.activity.tags,
+				tags: tagsToList($scope.activity.tags),
 				title: $scope.activity.title
 			  }
 		}  

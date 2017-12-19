@@ -17,7 +17,11 @@
 		</tr>
 		<tr>
 			<td class="mdl-data-table__cell--non-numeric">Tags: </td>
-			<td class="mdl-data-table__cell--non-numeric">{{activity.tags}}</td>
+			<td class="mdl-data-table__cell--non-numeric">
+				<div id="taglist" class="taglist" >
+					<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
+				</div>
+			</td>
 		</tr>
 	</table>
 			
