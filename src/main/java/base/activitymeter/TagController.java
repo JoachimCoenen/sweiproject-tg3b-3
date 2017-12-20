@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tag")
@@ -25,9 +27,15 @@ public class TagController {
 		return tagRepository.findOne(id);
 	}
 
-	@PostMapping
-	public Tag create(@RequestBody Tag input) {
-		return tagRepository.save(new Tag(input.getName()));
+	// public Tag findSimilarTags(@RequestBody Tag input) {
+	@GetMapping("similar/{id}")
+		public List<Tag> findSimilarTags(@PathVariable String id) {
+		List<Tag> tags = new ArrayList<>();
+		tagRepository.findAll().forEach(tags::add);
+		
+		List<Tag> tagList = tags.stream().filter(tag -> tag.getName().replaceAll("[\\- ]", "").contains(id.replaceAll("[\\- ]", ""))).collect(Collectors.toList());
+		
+		return tags;
 	}
 
 	// No delete, because tags are shared:

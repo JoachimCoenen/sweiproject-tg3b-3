@@ -1,6 +1,5 @@
 package base.activitymeter;
 
-import java.util.ArrayList;
 import java.util.*;
 
 import javax.persistence.ElementCollection;
