@@ -47,5 +47,10 @@ public class Tag {
 		return name;
 		
 	}
+	
+
+	public static boolean isValidTag(Tag tag) {
+		return tag.getName().matches("[\\w][\\w\\-_ ]*[\\w]");
+	}
 
 }

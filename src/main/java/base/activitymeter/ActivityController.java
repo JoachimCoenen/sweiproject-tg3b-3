@@ -25,14 +25,7 @@ public class ActivityController {
 
 	@GetMapping("{id}")
 	public Activity find(@PathVariable Long id) {
-		Set<Tag> tags = new HashSet<Tag>();
-		tags.add(new Tag("tag 1"));
-		tags.add(new Tag("tag 2"));
-		tags.add(new Tag("tag 3"));
-		
-		Activity activity = new Activity("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \r\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", tags, "input.getTitle()");
-		return activity;
-		// return activityRepository.findOne(id);
+		return activityRepository.findOne(id);
 	}
 
 	@PostMapping
@@ -52,18 +45,20 @@ public class ActivityController {
 		if (activity == null) {
 			return null;
 		} else {
+			saveTags(input.getTags());
 			activity.setText(input.getText());
 			activity.setTags(input.getTags());
 			activity.setTitle(input.getTitle());
 			return activityRepository.save(activity);
 		}
 	}
-	
+
 	
 	private void saveTags(Set<Tag> tags) {
 		Iterable<Tag> newTags = tagRepository.save(tags);
 		tags.clear();
-		newTags.forEach(tags::add);
+		newTags.forEach(tag -> { if(Tag.isValidTag(tag)) {tags.add(tag);} } );
 	}
+	
 
 }

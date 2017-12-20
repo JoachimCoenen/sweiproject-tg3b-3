@@ -1,8 +1,17 @@
 
 
+function isNullOrEmpty(str) {
+	return (str != null && str != "");
+}
+
 function tagsToList (tagsString) {
-	tagsList = tagsString.split(",");
-	tagsList = tagsList.map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
+	if (isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
+		// if tagsString contains any value && value is probably meaningfull, split string into tags.
+		tagsList = tagsString.split(",").map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
+	} else {
+		//otherwise assume no tags at all.
+		tagsList = [];
+	}
 	return tagsList;
 }
 
