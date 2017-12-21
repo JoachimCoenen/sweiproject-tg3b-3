@@ -146,6 +146,7 @@ app.controller('ViewActivityCtrl', function ($scope, $http, activity, $dialog, d
 });
 	
 app.controller('AddActivityCtrl', function($scope, $http, dialog){
+	$scope.activity = {};
 	$scope.save = function(Activity) {
 		var postRequest = {
 		method : 'POST',
@@ -195,6 +196,42 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 		dialog.close();
 	};
 });
+
+
+app.controller('TagsInputCtrl', function ($scope, $http, $log) {
 	
+	$scope.tagProposals = [];
+	$scope.change = function() {
+		$log.log($scope.activity.tags);
+		tag = tagsToList($scope.activity.tags).pop();
+		$log.log(tagsToList($scope.activity.tags));
+		$log.log(tag);
+		if (tag.name == "")  {
+			$('.tags-dropdown').removeClass('open');
+		} else {
+			var getRequest = {
+				method : 'GET',
+				url: 'tag/similar/' + tag.name
+			}  
+			
+			$http(getRequest).then(function (response) {
+				$scope.tagProposals = response.data;
+			}).then(function () {
+				//todo handle error
+			});
+			$('.tags-dropdown').addClass('open');
+		}
+	};
+	
+	$scope.addTag = function(tag) {
+		tagsList = tagsToList($scope.activity.tags);
+		tagsList.pop();
+		tagsList.push(tag);
+		$scope.activity.tags = tagsToString(tagsList) + ", ";
+		$('.tags-dropdown').removeClass('open')
+	 };
+	
+});
+
 //	return app;
 //}

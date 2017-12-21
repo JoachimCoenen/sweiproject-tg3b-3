@@ -346,3 +346,41 @@ h1, h3 {
 	color: #666;
 	/*background-color: rgba(150,200,200,0.3);*/
 }
+
+.modal-body {
+	/*z-index: 2 !important;*/
+  overflow-y:visible;
+	/*background-color: rgba(150,200,200,0.3);*/
+}
+
+.mdl-textfield__label {
+  color:rgba(0,0,0,1);
+  padding-left: 3px;
+	padding-right: 3px;
+	font-size:15px;
+  position:unset;
+  display:block; 
+}
+
+.mdl-textfield__input {
+  padding-left: 6px;
+	padding-right: 6px;
+	box-sizing:border-box;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	-moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	/*background-color: rgb(248,248,248);*/
+	overflow: auto;
+}
+
+.mdl-textfield {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	display: block;
+	margin-block-start: 0;
+}
