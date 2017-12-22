@@ -9,8 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 @RestController
 @RequestMapping("/tag")
@@ -39,33 +38,20 @@ public class TagController {
 
 		//String inputTag = inputs[0];
 		//inputs.length >= 2 ? Float.parseFloat(inputs[1]) / 100f : 0.99f;
-		final float minScore = 0.69f;//
-		
-		List<String> tagWords = Arrays.asList(inputTag.toLowerCase().split("[" + Tag.separatorChars + "]+"));
-		
-		// the double is the score:
-		List<Pair<Tag, Float>> filteredTags = new ArrayList<>();
-		tagRepository.findAll().forEach(tag -> {
-			String name = tag.getName().toLowerCase();
-
-			DoubleSummaryStatistics finalSummary = tagWords.stream()
-					.filter(str -> name.contains(str))
-					.collect(Collectors.summarizingDouble(str -> {
-				return Math.log1p(str.length());
-			}));
-			
-			float finalScore = (float) (finalSummary.getSum() / (float)tagWords.size());
-			
-			
-			if (finalScore >= minScore) {
-				filteredTags.add(Pair.of(tag, -finalScore)); // a negative finalScore makes the list be ordered the right way round
-			}
-			
-		});
-		
+		final float minScore = 0.5f; //0.69f;//
 		int maxCountOfProposedTags = 5;
-		return filteredTags.stream()
-				.sorted(Comparator.comparing(Pair::getSecond))
+		
+		String[] tagWords = inputTag.toLowerCase().split("[" + Tag.separatorChars + "]+");
+		
+		return StreamSupport.stream(tagRepository.findAll().spliterator(), false)
+				.map(tag-> Pair.of(tag, tag.getName().toLowerCase().replaceAll("["+Tag.separatorChars+"]+", "")))
+				.map(tag -> Pair.of(tag.getFirst(), Stream.of(tagWords)
+						.filter(str -> tag.getSecond().contains(str))
+						.collect(Collectors.summingDouble(str -> Math.log1p(str.length())))
+						/ (float)tagWords.length
+				))
+				.filter((pair) -> pair.getSecond() >= minScore)
+				.sorted(Comparator.comparing(pair -> -pair.getSecond()))
 				.limit(maxCountOfProposedTags)
 				.map(pair -> pair.getFirst())
 				.collect(Collectors.toList());
