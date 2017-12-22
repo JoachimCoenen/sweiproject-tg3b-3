@@ -216,10 +216,14 @@ app.controller('TagsInputCtrl', function ($scope, $http, $log) {
 			
 			$http(getRequest).then(function (response) {
 				$scope.tagProposals = response.data;
+				if ($scope.tagProposals.length > 0) {
+					$('.tags-dropdown').addClass('open');
+				} else {
+					$('.tags-dropdown').removeClass('open')
+				}
 			}).then(function () {
 				//todo handle error
 			});
-			$('.tags-dropdown').addClass('open');
 		}
 	};
 	

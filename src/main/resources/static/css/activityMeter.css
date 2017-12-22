@@ -384,3 +384,11 @@ h1, h3 {
 	display: block;
 	margin-block-start: 0;
 }
+
+.invisible {
+	margin: 0px;
+	padding: 0px;
+	display: block;
+	height: 0px;
+	width: 0px;
+}
