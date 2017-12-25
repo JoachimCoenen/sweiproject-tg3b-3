@@ -5,9 +5,9 @@
 }
 
 /* Activities List ------------------------------------------------------------------ */
-
+/*
 table a:link {
-	color: #666;
+	color: #666;	
 	font-weight: bold;
 	text-decoration: none;
 }
@@ -22,12 +22,12 @@ table a:active, table a:hover {
 	color: #bd5a35;
 	text-decoration: underline;
 }
-
+*/
 table {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #666;
 	font-size: 12px;
-	text-shadow: 1px 1px 0px #fff;
+	/*text-shadow: 1px 1px 0px #fff;*/
 	background: #eaebec;
 	border: 0px !important;;
 	-moz-border-radius: 3px;
@@ -205,6 +205,190 @@ h1, h3 {
 }
 
 
+.taglist {
+	/*position:sticky;*/
+	/*top: 0px;*/
+	/*left: 0px;*/
+	margin: 0px 0px;
+	bottom: 100%;
+	width: 100%;
+	height: 24px;
+	display:block;
+	float: right;
+	padding: 0 0;
+	font-size: 12px;
+	/*overflow-y:visible;*/
+	/*letter-spacing:1px;*/
+	/*background-color: rgba(150,150,150,0.3);*/
+}
+
+.taglist a {
+/*background-color:#4CAF50;*/
+ /*! color:rgba(0,0,0,1); */
+  text-decoration:none;
+	color: #666;
+}
+
+.taglist-item {
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	width:auto;
+	padding:0px 10px;
+	margin: 2px;
+	border:none;
+	outline:none;
+	text-align:center;
+	display:block;
+	/*font-size:14px;*/
+	/*font-weight:500;*/
+	float:left;
+	color: #666;
+	/*background-color: rgba(150,150,150,0.1);*/
+	-webkit-transition: background-color .2s cubic-bezier(.4,0,.2,1), color .2s cubic-bezier(.4,0,.2,1); /* Safari */
+	transition: background-color .2s cubic-bezier(.4,0,.2,1), color .2s cubic-bezier(.4,0,.2,1);
+}
+
+.taglist-item:hover {
+	/*color:rgb(0,0,0);*/
+	background-color:rgba(158,158,158,.2)
+}
 
 
+.activtylist {
+	/*position:sticky;*/
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	padding: 0 0;
+	/*overflow-y:visible;*/
+	/*letter-spacing:1px;*/
+}
 
+
+.activtylist-item {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width:100%;
+	padding:0px 0px;
+	margin: 2px;
+	border:none;
+	outline:none;
+	text-align:left;
+	/*display:block;*/
+	/*font-size:14px;*/
+	/*font-weight:500;*/
+	display:flex;
+	float:left;
+	color: #666;
+	/*background-color: rgba(150,150,150,0.3);*/
+	-webkit-transition: background-color .2s cubic-bezier(.4,0,.2,1), color .2s cubic-bezier(.4,0,.2,1); /* Safari */
+	transition: background-color .2s cubic-bezier(.4,0,.2,1), color .2s cubic-bezier(.4,0,.2,1);
+}
+
+.activtylist-item:hover {
+	/*color:rgb(0,0,0);*/
+	background-color:rgba(158,158,158,.1)
+}
+
+.activty-title {
+	width: 25%;
+	/*padding:0px 10px;*/
+	margin: 2px 0px;
+	border:none;
+	outline:none;
+	text-align:left;
+	/*display:block;*/
+	float:left;
+	color: #666;
+	/*background-color: rgba(150,150,150,0.3);*/
+}
+
+.activty-description {
+	width: 75%;
+	height: 100%;
+	padding: 0px 0px;
+	margin: 0px 0px;
+	border:none;
+	outline:none;
+	text-align:left;
+	/*display:block;*/
+	float:left;
+	color: #666;
+	/*background-color: rgba(150,150,150,0.3);*/
+}
+
+.activty-controls {
+	width: 190px;
+	padding: 2px 0px;
+	margin: 0px 4px;
+	border:none;
+	outline:none;
+	text-align:center;
+	display:block;
+	float:right;
+	color: #666;
+	/*background-color: rgba(150,150,150,0.3);*/
+}
+
+.activty-body {
+	width:100%;
+	padding:0px 3px;
+	margin: 2px;
+	border:none;
+	outline:none;
+	text-align:center;
+	display:flex;
+	flex-direction:column;
+	float:left;
+	color: #666;
+	/*background-color: rgba(150,200,200,0.3);*/
+}
+
+.modal-body {
+	/*z-index: 2 !important;*/
+  overflow-y:visible;
+	/*background-color: rgba(150,200,200,0.3);*/
+}
+
+.mdl-textfield__label {
+  color:rgba(0,0,0,1);
+  padding-left: 3px;
+	padding-right: 3px;
+	font-size:15px;
+  position:unset;
+  display:block; 
+}
+
+.mdl-textfield__input {
+  padding-left: 6px;
+	padding-right: 6px;
+	box-sizing:border-box;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	-moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.22) inset !important;
+	/*background-color: rgb(248,248,248);*/
+	overflow: auto;
+}
+
+.mdl-textfield {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	display: block;
+	margin-block-start: 0;
+}
+
+.invisible {
+	margin: 0px;
+	padding: 0px;
+	display: block;
+	height: 0px;
+	width: 0px;
+}

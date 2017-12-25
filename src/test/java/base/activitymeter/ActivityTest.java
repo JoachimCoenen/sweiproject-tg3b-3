@@ -1,5 +1,7 @@
 package base.activitymeter;
 
+import java.util.HashSet;
+
 import org.junit.Test;
 
 import com.openpojo.reflection.PojoClass;
@@ -35,7 +37,7 @@ public class ActivityTest {
 
 	@Test
 	public void testConstructor() {
-		new Activity(TEXT, TAGS, TITLE);
+		new Activity(TEXT, new HashSet<Tag>(), TITLE);
 	}
 
 }
