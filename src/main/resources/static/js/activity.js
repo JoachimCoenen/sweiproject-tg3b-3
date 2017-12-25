@@ -1,4 +1,25 @@
 
+
+function isNullOrEmpty(str) {
+	return (str != null && str != "");
+}
+
+function tagsToList (tagsString) {
+	if (isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
+		// if tagsString contains any value && value is probably meaningfull, split string into tags.
+		tagsList = tagsString.split(",").map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
+	} else {
+		//otherwise assume no tags at all.
+		tagsList = [];
+	}
+	return tagsList;
+}
+
+function tagsToString (tagsList) {
+	return tagsList.map(function(tag) { return tag.name; }).join(", ");
+}
+
+
 function loadActivities ($scope, $http){
 	return $http({
 		 method : 'GET',
@@ -7,17 +28,30 @@ function loadActivities ($scope, $http){
 				'http://localhost:8080/activity' :
 				'https://activityexample.herokuapp.com/activity')
 		 */
-		 url: 'activity'
+		 url: 'tag'
 				
 		}).then(function (response) {
-			 $scope.activities = response.data;
+			 $scope.allTags = response.data;
+	}).then(function () {
+		$http({
+			 method : 'GET',
+			 /*
+			 url: (window.location.hostname === 'localhost' ?
+					'http://localhost:8080/activity' :
+					'https://activityexample.herokuapp.com/activity')
+			 */
+			 url: 'activity'
+					
+			}).then(function (response) {
+				 $scope.activities = response.data;
+		});
 	});
 }
 
 function loadActivity (activityId, $scope, $http){
 	return $http({
 		 method : 'GET',
-		url: 'activity/' + $scope.activity.id
+		url: 'activity/' + $scope.activityId
 		}).then(function (response) {
 			 $scope.activity = response.data;
 	});
@@ -40,8 +74,9 @@ var editDialogOptions = {
 	templateUrl: './templates/activityEdit.html',
 };
 function editActivity_bare(activity, $scope, $http, $dialog) {
-	var activityToEdit = activity;
-	return $dialog.dialog(angular.extend(editDialogOptions, {resolve: {activity: angular.copy(activityToEdit)}})).open().then(function (){
+	var activityToEdit = angular.copy(activity);
+	activityToEdit.tags = tagsToString(activityToEdit.tags);
+	return $dialog.dialog(angular.extend(editDialogOptions, {resolve: {activity: activityToEdit}})).open().then(function (){
 		loadActivities($scope, $http);
 	});
 };
@@ -111,13 +146,14 @@ app.controller('ViewActivityCtrl', function ($scope, $http, activity, $dialog, d
 });
 	
 app.controller('AddActivityCtrl', function($scope, $http, dialog){
+	$scope.activity = {};
 	$scope.save = function(Activity) {
 		var postRequest = {
 		method : 'POST',
 		url: 'activity' ,
 		data: {
 				text: $scope.activity.text,
-				tags: $scope.activity.tags,
+				tags: tagsToList($scope.activity.tags),
 				title: $scope.activity.title
 			  }
 		}  
@@ -142,7 +178,7 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 		url: 'activity/' + $scope.activity.id,
 		data: {
 				text: $scope.activity.text,
-				tags: $scope.activity.tags,
+				tags: tagsToList($scope.activity.tags),
 				title: $scope.activity.title
 			  }
 		}  
@@ -160,6 +196,46 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 		dialog.close();
 	};
 });
+
+
+app.controller('TagsInputCtrl', function ($scope, $http, $log) {
 	
+	$scope.tagProposals = [];
+	$scope.change = function() {
+		$log.log($scope.activity.tags);
+		tag = tagsToList($scope.activity.tags).pop();
+		$log.log(tagsToList($scope.activity.tags));
+		$log.log(tag);
+		if (tag.name == "")  {
+			$('.tags-dropdown').removeClass('open');
+		} else {
+			var getRequest = {
+				method : 'GET',
+				url: 'tag/similar/' + tag.name
+			}  
+			
+			$http(getRequest).then(function (response) {
+				$scope.tagProposals = response.data;
+				if ($scope.tagProposals.length > 0) {
+					$('.tags-dropdown').addClass('open');
+				} else {
+					$('.tags-dropdown').removeClass('open')
+				}
+			}).then(function () {
+				//todo handle error
+			});
+		}
+	};
+	
+	$scope.addTag = function(tag) {
+		tagsList = tagsToList($scope.activity.tags);
+		tagsList.pop();
+		tagsList.push(tag);
+		$scope.activity.tags = tagsToString(tagsList) + ", ";
+		$('.tags-dropdown').removeClass('open')
+	 };
+	
+});
+
 //	return app;
 //}

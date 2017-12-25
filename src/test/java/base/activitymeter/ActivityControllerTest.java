@@ -2,7 +2,10 @@ package base.activitymeter;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -159,12 +162,14 @@ public class ActivityControllerTest {
 		int i = hash1 % randomTexts.length;
 		int j = hash2 % randomTags.length;
 		int k = hash3 % randomTitles.length;
-		return new Activity(randomTexts[i], randomTags[j], randomTitles[k]);
+		HashSet<Tag> tags = new HashSet<Tag>();
+		tags.add(new Tag(randomTags[j]));
+		return new Activity(randomTexts[i], tags, randomTitles[k]);
 	}
 
 	private String makeActivityJSON(Activity activity) {
-		String json = String.format("{ \"id\":\"%d\", \"text\":\"%s\", \"tags\":\"%s\", \"title\":\"%s\" }", 
-				activity.getId(), activity.getText(), activity.getTags(), activity.getTitle());
+		String json = String.format("{ \"id\":\"%d\", \"text\":\"%s\", \"tags\":%s, \"title\":\"%s\" }", 
+				activity.getId(), activity.getText(), "[{\"name\": \"" + activity.getTags().toArray(new Tag[1])[0] + "\"}]", activity.getTitle());
 		
 		return json;
 	}
@@ -197,6 +202,11 @@ public class ActivityControllerTest {
 	@Test(timeout = 10000)
 	public void testDelete() throws Exception {
 		String activity = makeActivityJSON(0);
+		System.out.println("========================================================================");
+		System.out.println("========================================================================");
+		System.out.println(activity);
+		System.out.println("========================================================================");
+		System.out.println("========================================================================");
 		// Add an activity
 		mockMvc.perform(post("/activity").contentType(MediaType.APPLICATION_JSON).content(activity)).andExpect(status().isOk());
 

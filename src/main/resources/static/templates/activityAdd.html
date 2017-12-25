@@ -2,18 +2,26 @@
 	<h1>Add</h1>
 </div>
 <div class="modal-body">
-	<p>
-		Title <input ng-model="activity.title" size="40"/>
-	</p>
-	<p>
-		Text <input ng-model="activity.text" size="100"/>
-	</p>
-	<p>
-		Tags <input ng-model="activity.tags" size="40"/>
-	</p>
-	
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
+		<label class="mdl-textfield__label">Title:</label>
+		<input class="mdl-textfield__input" ng-model="activity.title" size="40"/>
+	</div>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--expandable mdl-textfield--full-width" style="width:100% !important">
+		<label class="mdl-textfield__label">Description:</label>
+		<textarea class="mdl-textfield__input" ng-model="activity.text" size="100"></textarea>
+	</div>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
+		<label class="mdl-textfield__label">Tags:</label>
+		<div class="dropdown tags-dropdown" ng-controller="TagsInputCtrl" >
+			<input class="mdl-textfield__input" ng-model="activity.tags" ng-change="change()" size="40" />
+			<a class="dropdown-toggle invisible" data-toggle="dropdown">Hello, there</a>
+			<ul class="dropdown-menu" role="menu">
+				<li ng-repeat="tag in tagProposals"><a tabindex="0" data-ng-click="addTag(tag)">{{tag.name}}</a></li>
+			</ul>
+		</div>
+	</div>
 </div>
 <div class="modal-footer">
-	<button ng-click="save(activity)">Save</button>
-	<button ng-click="close()">Close</button>
+	<button class="mdl-button" ng-click="save(activity)">Save</button>
+	<button class="mdl-button dangerous" ng-click="close()">Close</button>
 </div>

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/activity")
@@ -12,6 +12,9 @@ public class ActivityController {
 
 	@Autowired
 	private ActivityRepository activityRepository;
+	
+	@Autowired
+	private TagRepository tagRepository;
 
 	@GetMapping
 	public List<Activity> listAll() {
@@ -27,6 +30,7 @@ public class ActivityController {
 
 	@PostMapping
 	public Activity create(@RequestBody Activity input) {
+		saveTags(input.getTags());
 		return activityRepository.save(new Activity(input.getText(), input.getTags(), input.getTitle()));
 	}
 
@@ -41,11 +45,20 @@ public class ActivityController {
 		if (activity == null) {
 			return null;
 		} else {
+			saveTags(input.getTags());
 			activity.setText(input.getText());
 			activity.setTags(input.getTags());
 			activity.setTitle(input.getTitle());
 			return activityRepository.save(activity);
 		}
 	}
+
+	
+	private void saveTags(Set<Tag> tags) {
+		Iterable<Tag> newTags = tagRepository.save(tags);
+		tags.clear();
+		newTags.forEach(tag -> { if(Tag.isValidTag(tag)) {tags.add(tag);} } );
+	}
+	
 
 }
