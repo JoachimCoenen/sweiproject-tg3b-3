@@ -2,30 +2,12 @@
 	<h1>{{activity.title}}</h1>
 </div>
 <div class="modal-body">
-	<table class="mdl-data-table" style="width:100%">
-		<tr>
-			<td class="mdl-data-table__cell--non-numeric">Description: </td>
-			<td class="mdl-data-table__cell--non-numeric">{{activity.text}}</td>
-		</tr>
-		<tr>
-			<td class="mdl-data-table__cell--non-numeric">Category: </td>
-			<td class="mdl-data-table__cell--non-numeric">{{activity.category}}</td>
-		</tr>
-		<tr>
-			<td class="mdl-data-table__cell--non-numeric">Department / College: </td>
-			<td class="mdl-data-table__cell--non-numeric">{{activity.departmentCollege}}</td>
-		</tr>
-		<tr>
-			<td class="mdl-data-table__cell--non-numeric">Tags: </td>
-			<td class="mdl-data-table__cell--non-numeric">
-				<div id="taglist" class="taglist" >
-					<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
-				</div>
-			</td>
-		</tr>
-	</table>
-			
-	
+	<div class="full-width">
+		<div  class="activty-description">{{activity.text}}</div>
+	</div>
+	<div id="taglist" class="taglist" >
+		<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
+	</div>
 </div>
 <div class="modal-footer">
 	<button class="mdl-button dangerous" ng-click="delete(activity)">Delete</button>

@@ -2,11 +2,13 @@ package base.activitymeter;
 
 import java.util.*;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -16,6 +18,8 @@ public class Activity {
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(length=10000)
+	@Lob
 	private String text;
 	@ManyToMany
 	private Set<Tag> tags;// = new HashSet<Tag>();

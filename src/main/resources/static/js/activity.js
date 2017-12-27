@@ -1,11 +1,11 @@
 
 
 function isNullOrEmpty(str) {
-	return (str != null && str != "");
+	return (str == null || str == "");
 }
 
 function tagsToList (tagsString) {
-	if (isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
+	if (!isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
 		// if tagsString contains any value && value is probably meaningfull, split string into tags.
 		tagsList = tagsString.split(",").map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
 	} else {
@@ -18,6 +18,12 @@ function tagsToList (tagsString) {
 function tagsToString (tagsList) {
 	return tagsList.map(function(tag) { return tag.name; }).join(", ");
 }
+
+
+function prepareHTML($log) {
+	$('.taglist').html('<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>');
+}
+
 
 
 function loadActivities ($scope, $http){
@@ -94,10 +100,13 @@ function deleteActivity_bare(activity, $scope, $http, $dialog) {
 	};
 
 
-//function initiateApp() {
-	var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+// $(document).ready(function(){
+//	prepareHTML();
+// });
 
-app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
+var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+
+app.controller('ActivityCtrl', function ($scope, $http, $dialog, $log) {
 	loadActivities($scope, $http);
 	
 	$scope.viewActivity = function(activity){

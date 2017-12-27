@@ -11,7 +11,7 @@
 		<textarea class="mdl-textfield__input" ng-model="activity.text" size="100"></textarea>
 	</div>
 	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
-		<label class="mdl-textfield__label">Tags:</label>
+		<label class="mdl-textfield__label">Tags: (separated by comma)</label>
 		<div class="dropdown tags-dropdown" ng-controller="TagsInputCtrl" >
 			<input class="mdl-textfield__input" ng-model="activity.tags" ng-change="change()" size="40" />
 			<a class="dropdown-toggle invisible" data-toggle="dropdown">Hello, there</a>
