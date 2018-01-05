@@ -66,6 +66,10 @@
 				
 					<div class="activty-body">
 						<h4 class="activty-title" ng-click="viewActivity(activity)">{{activity.title}}</h4>
+						<div id="taglist" class="taglist" >
+							<a class="taglist-item">{{activity.id}}</a>
+							<a class="taglist-item">{{activity.public}}</a>
+						</div>
 						<div class="activty-description" ng-click="viewActivity(activity)">{{activity.text}}</div>
 						<div id="taglist" class="taglist" >
 							<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>

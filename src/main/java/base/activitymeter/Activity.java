@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 public class Activity {
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(length=10000)
@@ -29,10 +28,14 @@ public class Activity {
 		tags = new HashSet<Tag>();
 	}
 
-	public Activity(String text, Set<Tag> tags, String title) {
+	public Activity(String text, Set<Tag> tags, String title, boolean isPublic) {
 		this.text = text;
 		this.tags = tags;
 		this.title = title;
+	}
+
+	public Activity(String text, Set<Tag> tags, String title) {
+		this(text, tags, title, false);
 	}
 
 	public Long getId() {
@@ -67,4 +70,5 @@ public class Activity {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 }

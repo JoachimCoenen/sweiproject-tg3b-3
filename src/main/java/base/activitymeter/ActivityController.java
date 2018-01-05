@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+
+import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 
 @RestController
@@ -11,10 +15,16 @@ import java.util.*;
 public class ActivityController {
 
 	@Autowired
+	private RequestedActionsRepository requestedActionsRepository;
+	
+	@Autowired
 	private ActivityRepository activityRepository;
 	
 	@Autowired
 	private TagRepository tagRepository;
+	
+	@Autowired
+	private ActivityEmailService mailService;
 
 	@GetMapping
 	public List<Activity> listAll() {
@@ -27,38 +37,63 @@ public class ActivityController {
 	public Activity find(@PathVariable Long id) {
 		return activityRepository.findOne(id);
 	}
+	
+	@PostMapping()
+	public String addActivity(@RequestBody RequestBodyEmail<Activity> input, HttpServletRequest request) {
 
-	@PostMapping
-	public Activity create(@RequestBody Activity input) {
-		saveTags(input.getTags());
-		return activityRepository.save(new Activity(input.getText(), input.getTags(), input.getTitle()));
+		requestAction(request, input.getEmailAddress(), new RequestedAction(input.getData(), RequestedAction.ActionID.POST));
+		
+		return "CheckYourMail.html";
 	}
 
-	@DeleteMapping("{id}")
-	public void delete(@PathVariable Long id) {
-		activityRepository.delete(id);
+	@DeleteMapping()
+	public void delete(@RequestBody RequestBodyEmail<Activity> input, HttpServletRequest request) {
+		Activity activity = input.getData();
+		activity = activityRepository.findOne(activity.getId());
+		requestAction(request, input.getEmailAddress(), new RequestedAction(activity, RequestedAction.ActionID.DELETE));
 	}
 
 	@PutMapping("{id}")
-	public Activity update(@PathVariable Long id, @RequestBody Activity input) {
-		Activity activity = activityRepository.findOne(id);
-		if (activity == null) {
+	public Activity update(@PathVariable Long id, @RequestBody RequestBodyEmail<Activity> input, HttpServletRequest request) {
+		Activity oldActivity = activityRepository.findOne(id);
+		if (oldActivity == null) {
 			return null;
 		} else {
-			saveTags(input.getTags());
-			activity.setText(input.getText());
-			activity.setTags(input.getTags());
-			activity.setTitle(input.getTitle());
-			return activityRepository.save(activity);
+			Activity newActivity = input.getData();
+			newActivity.setId(oldActivity.getId());
+
+			requestAction(request, input.getEmailAddress(), 
+					new RequestedAction(newActivity, RequestedAction.ActionID.POST)
+					);
+			return newActivity;
 		}
 	}
 
 	
-	private void saveTags(Set<Tag> tags) {
+	private void updateTags(Set<Tag> tags) {
 		Iterable<Tag> newTags = tagRepository.save(tags);
 		tags.clear();
 		newTags.forEach(tag -> { if(Tag.isValidTag(tag)) {tags.add(tag);} } );
 	}
 	
 
+
+	public RequestedAction[] requestAction(HttpServletRequest request, String emailAddress, RequestedAction... actions) {
+		String hostAddress = request.getRequestURL().toString().replaceFirst("(?<!\\/)\\/(?!\\/).*", "/");
+		String mailAddress = hostAddress + "actions/confirm/";
+		StringBuilder ids = new StringBuilder();
+		RequestedAction[] result = Arrays.stream(actions)
+				.map(action -> requestedActionsRepository.save(action))
+				.peek(action -> ids.append("&").append(action.getId()))
+				.toArray(RequestedAction[]::new);
+		ids.delete(0, 1); // remove the first & character, it is not needed!
+		
+		try {
+			mailService.sendConfirmationEmail(emailAddress, hostAddress + "actions/confirm/" + ids.toString());
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return actions;
+	}
 }
