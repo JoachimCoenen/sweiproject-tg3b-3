@@ -87,11 +87,17 @@ function editActivity_bare(activity, $scope, $http, $dialog) {
 	});
 };
 
-function deleteActivity_bare(activity, $scope, $http, $dialog) {
+function deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog) {
 		var deleteRequest = {
 			method : 'DELETE',
-			url: 'activity/' + activity.id
-		};
+			url: 'activity',
+			data: {
+				data: {
+					id: activity.id
+				},
+				emailAddress: emailAddress
+			}
+		}
 		
 		return $http(deleteRequest).then(function() {
 			loadActivities($scope, $http);
@@ -128,7 +134,9 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog, $log) {
 	};
 		
 	$scope.delete = function(activity) {
-		deleteActivity_bare(activity, $scope, $http, $dialog);
+		// TODO: promt for emailAddress!!
+		emailAddress = "TEST@test-test.com"
+		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog);
 	};
 });
 
@@ -143,7 +151,9 @@ app.controller('ViewActivityCtrl', function ($scope, $http, activity, $dialog, d
 	};
 	
 	$scope.delete = function(activity) {
-		deleteActivity_bare(activity, $scope, $http, $dialog).then(function () {
+		// TODO: promt for emailAddress!!
+		emailAddress = "TEST@test-test.com"
+		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog).then(function () {
 		dialog.close();
 		});
 	};
@@ -158,14 +168,17 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
 	$scope.activity = {};
 	$scope.save = function(Activity) {
 		var postRequest = {
-		method : 'POST',
-		url: 'activity' ,
-		data: {
-				text: $scope.activity.text,
-				tags: tagsToList($scope.activity.tags),
-				title: $scope.activity.title
-			  }
-		}  
+			method : 'POST',
+			url: 'activity' ,
+			data: {
+				data: {
+					text: $scope.activity.text,
+					tags: tagsToList($scope.activity.tags),
+					title: $scope.activity.title
+					},
+				emailAddress: $scope.emailAddress
+			}
+		};
 		
 		$http(postRequest).then(function (response) {
 			$scope.activities = response.data;
@@ -183,15 +196,17 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 	$scope.activity = activity;
 	$scope.save = function($activity) {
 		var putRequest = {
-		method : 'PUT',
-		url: 'activity/' + $scope.activity.id,
-		data: {
-				text: $scope.activity.text,
-				tags: tagsToList($scope.activity.tags),
-				title: $scope.activity.title
-			  }
-		}  
-		
+			method : 'PUT',
+			url: 'activity/' + $scope.activity.id,
+			data: {
+				data: {
+					text: $scope.activity.text,
+					tags: tagsToList($scope.activity.tags),
+					title: $scope.activity.title
+				 },
+				 emailAddress: $scope.emailAddress
+			}  
+		};
 		$http(putRequest).then(function (response) {
 			$scope.activities = response.data;
 		}).then(function () {
