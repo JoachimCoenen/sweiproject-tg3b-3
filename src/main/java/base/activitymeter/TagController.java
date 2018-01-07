@@ -31,7 +31,7 @@ public class TagController {
 	@GetMapping("similar/{inputTag}")
 	public List<Tag> findSimilarTags(@PathVariable String inputTag) {
 		
-		final float minScore = 0.5f; //0.69f;//
+		final float minScore = 0.5f; //0.69f
 		int maxCountOfProposedTags = 5;
 		
 		String[] tagWords = inputTag.toLowerCase().split("[" + Tag.SEPARATOR_CHARS + "]+");

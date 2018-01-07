@@ -22,8 +22,8 @@ import it.ozimov.springboot.mail.service.EmailService;
 @Service
 //@Slf4j
 public class DefaultActivityEmailService implements ActivityEmailService {
-	public final static String replyToMailAddress = "noreply@ias-se-se-se";
-	public final static String fromMailAddress = "ias.se.se.se.2@gmail.com";
+	public static final String REPLY_TO_MAIL_ADDRESS = "noreply@ias-se-se-se";
+	public static final String FROM_MAIL_ADDRESS = "ias.se.se.se.2@gmail.com";
 	@Autowired
 	public EmailService emailService;
 
@@ -34,8 +34,8 @@ public class DefaultActivityEmailService implements ActivityEmailService {
 	public void sendConfirmationEmail(String mailAddress, String link) throws AddressException {
 		Email email;
 		email = DefaultEmail.builder()
-		        .from(new InternetAddress(fromMailAddress))
-		        .replyTo(new InternetAddress(replyToMailAddress))
+		        .from(new InternetAddress(FROM_MAIL_ADDRESS))
+		        .replyTo(new InternetAddress(REPLY_TO_MAIL_ADDRESS))
 		        .to(Arrays.asList(new InternetAddress(mailAddress)))
 		        .subject("ias-se-se-se Confirmation of ")
 		        .body("Lorem ipsum dolor sit amet [...] " + link)
