@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import it.ozimov.springboot.mail.model.Email;
 import it.ozimov.springboot.mail.model.defaultimpl.DefaultEmail;
 import it.ozimov.springboot.mail.service.EmailService;
-import it.ozimov.springboot.mail.service.defaultimpl.DefaultEmailService;
 
 /**
  * @author Joachim Coenen
@@ -23,8 +22,8 @@ import it.ozimov.springboot.mail.service.defaultimpl.DefaultEmailService;
 @Service
 //@Slf4j
 public class DefaultActivityEmailService implements ActivityEmailService {
-	public final String replyToMailAddress = "noreply@ias-se-se-se";
-	public final String fromMailAddress = "ias.se.se.se.2@gmail.com";
+	public final static String replyToMailAddress = "noreply@ias-se-se-se";
+	public final static String fromMailAddress = "ias.se.se.se.2@gmail.com";
 	@Autowired
 	public EmailService emailService;
 

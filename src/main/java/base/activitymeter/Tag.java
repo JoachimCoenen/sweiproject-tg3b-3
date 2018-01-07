@@ -6,9 +6,6 @@ import javax.persistence.Id;
 @Entity
 public class Tag {
 
-	//@Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	// private Long id;
 	
 	@Id
 	private /*final*/ String name; // cannot be final, because of the way spring boot instantiates its @Entity objects.
@@ -36,13 +33,13 @@ public class Tag {
 	 * 
 	 * This is used when comparing Tags.
 	 */
-	public static final String separatorChars = "_ \\-";
+	public static final String SEPARATOR_CHARS = "_ \\-";
 	
-	public static final String wordChars = "\\w";
+	public static final String WORD_CHARS = "\\w";
 	
-	public static final String validChars = separatorChars + wordChars;
+	public static final String VALID_CHARS = SEPARATOR_CHARS + WORD_CHARS;
 	
-	public static final String validTagRegEx = String.join("", "[", wordChars, "][", validChars, "]*[", wordChars, "]"); // regEx expression: '[\w][\w\-_ ]*[\w]' == "[\\w][\\w\\-_ ]*[\\w]"
+	public static final String VALID_TAG_REGEX = String.join("", "[", WORD_CHARS, "][", VALID_CHARS, "]*[", WORD_CHARS, "]"); // regEx expression: '[\w][\w\-_ ]*[\w]' == "[\\w][\\w\\-_ ]*[\\w]"
 	
 
 	public static boolean isValidTag(Tag tag) {

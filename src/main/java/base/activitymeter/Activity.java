@@ -20,23 +20,19 @@ public class Activity {
 	@Lob
 	private String text;
 	@ManyToMany
-	private Set<Tag> tags;// = new HashSet<Tag>();
+	private Set<Tag> tags;
 	private String title;
 
 	public Activity() {
-		tags = new HashSet<Tag>();
+		tags = new HashSet<>();
 	}
 
-	public Activity(String text, Set<Tag> tags, String title, boolean isPublic) {
+	public Activity(String text, Set<Tag> tags, String title) {
 		this.text = text;
 		this.tags = tags;
 		this.title = title;
 	}
-
-	public Activity(String text, Set<Tag> tags, String title) {
-		this(text, tags, title, false);
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -59,7 +55,6 @@ public class Activity {
 
 	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
-		//this.tags.addAll(tags);
 	}
 
 	public String getTitle() {

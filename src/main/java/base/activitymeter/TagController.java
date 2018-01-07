@@ -28,34 +28,26 @@ public class TagController {
 		return tagRepository.findOne(id);
 	}
 
-	// public List<Tag> findSimilarTags(@RequestBody Tag input) {
 	@GetMapping("similar/{inputTag}")
 	public List<Tag> findSimilarTags(@PathVariable String inputTag) {
 		
-		//String[] inputs = input.split("&");
-
-		//String inputTag = inputs[0];
-		//inputs.length >= 2 ? Float.parseFloat(inputs[1]) / 100f : 0.99f;
 		final float minScore = 0.5f; //0.69f;//
 		int maxCountOfProposedTags = 5;
 		
-		String[] tagWords = inputTag.toLowerCase().split("[" + Tag.separatorChars + "]+");
+		String[] tagWords = inputTag.toLowerCase().split("[" + Tag.SEPARATOR_CHARS + "]+");
 		
 		return StreamSupport.stream(tagRepository.findAll().spliterator(), false)
-				.map(tag-> Pair.of(tag, tag.getName().toLowerCase().replaceAll("["+Tag.separatorChars+"]+", "")))
+				.map(tag-> Pair.of(tag, tag.getName().toLowerCase().replaceAll("["+Tag.SEPARATOR_CHARS+"]+", "")))
 				.map(tag -> Pair.of(tag.getFirst(), Stream.of(tagWords)
 						.filter(str -> tag.getSecond().contains(str))
 						.collect(Collectors.summingDouble(str -> Math.log1p(str.length())))
 						/ (float)tagWords.length
 				))
-				.filter((pair) -> pair.getSecond() >= minScore)
+				.filter(pair -> pair.getSecond() >= minScore)
 				.sorted(Comparator.comparing(pair -> -pair.getSecond()))
 				.limit(maxCountOfProposedTags)
-				.map(pair -> pair.getFirst())
+				.map(Pair::getFirst)
 				.collect(Collectors.toList());
-		
-		//List<Tag> tagList = tags.stream().filter(tag -> tag.getName().replaceAll("[\\- ]", "").contains(id.replaceAll("[\\- ]", ""))).collect(Collectors.toList());
-		
 	}
 
 }
