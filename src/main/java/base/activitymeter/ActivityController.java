@@ -82,8 +82,8 @@ public class ActivityController {
 		try {
 			mailService.sendConfirmationEmail(emailAddress, hostAddress + "actions/confirm/" + ids.toString());
 		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO Report wrong email to user...
+			System.out.print(e.toString());
 		}
 		return result;
 	}
