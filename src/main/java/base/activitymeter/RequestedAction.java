@@ -25,7 +25,7 @@ public class RequestedAction {
 
 	RequestedAction() {
 		expirationDate = System.currentTimeMillis() + DEFAULT_EXPIRATION_TIME;
-	};
+	}
 	
 	RequestedAction(String data, ActionID actionID) {
 		this();

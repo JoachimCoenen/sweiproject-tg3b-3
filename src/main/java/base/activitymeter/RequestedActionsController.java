@@ -63,12 +63,11 @@ public class RequestedActionsController {
 		case NONE:
 			isSuccess = true;
 			break;
-		case POST: {
+		case POST: 
 			saveTags(activity.getTags());
 			activityRepository.save(activity);
 			isSuccess = true;
 			break;
-		}
 		case DELETE:
 			activityRepository.delete(activity);
 			isSuccess = true;

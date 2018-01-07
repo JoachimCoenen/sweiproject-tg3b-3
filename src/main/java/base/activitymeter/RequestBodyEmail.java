@@ -15,7 +15,7 @@ public class RequestBodyEmail<T> {
 
 	public RequestBodyEmail() {
 		emailAddress = "";
-	};
+	}
 	
 	public RequestBodyEmail(T data, String emailAddress) {
 		this();
