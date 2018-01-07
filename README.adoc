@@ -13,7 +13,7 @@ experimental: Try the code inside your browser with -> http://beta.codenvy.com/f
 
 This guide walks you through the process of creating a "hello world" link:/understanding/REST[RESTful web service] with Spring.
 
-== What you'll build
+== What you'll buildd
 
 You'll build a service that will accept HTTP GET requests at:
 
