@@ -21,9 +21,6 @@ public class ActivityController {
 	private ActivityRepository activityRepository;
 	
 	@Autowired
-	private TagRepository tagRepository;
-	
-	@Autowired
 	private ActivityEmailService mailService;
 
 	@GetMapping
@@ -70,17 +67,10 @@ public class ActivityController {
 	}
 
 	
-	private void updateTags(Set<Tag> tags) {
-		Iterable<Tag> newTags = tagRepository.save(tags);
-		tags.clear();
-		newTags.forEach(tag -> { if(Tag.isValidTag(tag)) {tags.add(tag);} } );
-	}
-	
 
 
 	public RequestedAction[] requestAction(HttpServletRequest request, String emailAddress, RequestedAction... actions) {
 		String hostAddress = request.getRequestURL().toString().replaceFirst("(?<!\\/)\\/(?!\\/).*", "/");
-		String mailAddress = hostAddress + "actions/confirm/";
 		StringBuilder ids = new StringBuilder();
 		RequestedAction[] result = Arrays.stream(actions)
 				.map(action -> requestedActionsRepository.save(action))
@@ -94,6 +84,6 @@ public class ActivityController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return actions;
+		return result;
 	}
 }

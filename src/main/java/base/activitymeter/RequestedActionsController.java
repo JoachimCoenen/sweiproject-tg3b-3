@@ -3,20 +3,13 @@
  */
 package base.activitymeter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
-import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,11 +35,6 @@ public class RequestedActionsController {
 	@Autowired
 	private TagRepository tagRepository;
 	
-	@Autowired
-	private ActivityEmailService mailService;
-	
-
-
 	@GetMapping("confirm/{idsString}")
 	public String confirmAction(@PathVariable String idsString) {
 		boolean isSuccess = Arrays.stream(idsString.split("&"))

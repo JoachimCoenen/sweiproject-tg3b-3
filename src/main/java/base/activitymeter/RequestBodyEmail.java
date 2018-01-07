@@ -14,10 +14,10 @@ public class RequestBodyEmail<T> {
 	private String emailAddress;
 
 
-	RequestBodyEmail() {
+	public RequestBodyEmail() {
 	};
 	
-	RequestBodyEmail(T data, String emailAddress) {
+	public RequestBodyEmail(T data, String emailAddress) {
 		this();
 		this.setData(data);
 		this.setEmailAddress(emailAddress);
