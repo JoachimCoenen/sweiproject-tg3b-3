@@ -36,7 +36,7 @@ public class Tag {
 	 * 
 	 * This is used when comparing Tags.
 	 */
-	public static final String separatorChars = "\\-_ ";
+	public static final String separatorChars = "_ \\-";
 	
 	public static final String wordChars = "\\w";
 	
@@ -46,7 +46,7 @@ public class Tag {
 	
 
 	public static boolean isValidTag(Tag tag) {
-		return tag.getName().matches("[\\w][\\w\\-_ ]*[\\w]");
+		return tag.getName().matches("[\\w][\\w_ \\-]*[\\w]");
 	}
 
 }

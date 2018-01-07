@@ -65,7 +65,7 @@ public class RequestedActionsController {
 			break;
 		case POST: {
 			saveTags(activity.getTags());
-			activity = activityRepository.save(activity);
+			activityRepository.save(activity);
 			isSuccess = true;
 			break;
 		}

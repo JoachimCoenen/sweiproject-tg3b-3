@@ -1,6 +1,5 @@
 package base.activitymeter;
 
-
 import java.util.HashSet;
 import static org.junit.Assert.*;
 
@@ -22,12 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
-public class ActivityControllerTest {
+public class TagControllerTest {
+
 
 	@Autowired
 	MockMvc mockMvc;
 
-	public ActivityControllerTest() {
+	public TagControllerTest() {
 		
 	}
 	
@@ -172,8 +172,6 @@ public class ActivityControllerTest {
 		return json;
 	}
 	
-	
-
 	private String getAnActivityID() throws Exception{
 		// Get ID of that activity
 		String result = mockMvc.perform(get("/activity")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
@@ -186,6 +184,7 @@ public class ActivityControllerTest {
 
 	private String makeActionConfirm() {
 		TestHelper.actionsRequested++; // starts at 1 (1, 2, 3, ...)
+		System.out.println("TagCtrl: TestHelper.actionsRequested == " + TestHelper.actionsRequested);
 		return "/actions/confirm/" + (TestHelper.actionsRequested);
 		
 	}
@@ -196,66 +195,31 @@ public class ActivityControllerTest {
 	
 	@Test(timeout = 10000)
 	public void testListAll_1() throws Exception {
-		mockMvc.perform(get("/activity")).andExpect(status().isOk());
+		mockMvc.perform(get("/tag")).andExpect(status().isOk());
 	}
 	
-	@Test(timeout = 10000)
-	public void testFind() throws Exception {
-		mockMvc.perform(get("/activity/0")).andExpect(status().isOk());
-	}
 
 	@Test(timeout = 10000)
-	public void testDelete() throws Exception {
-		String activity = makeRequestBodyEmailJSON(makeActivity(0));
-		// Add an activity
-		mockMvc.perform(post("/activity").contentType(MediaType.APPLICATION_JSON).content(activity)).andExpect(status().isOk());
-		confirmAction();
+	public void testFindSimilarTags() throws Exception {
+		String result1 = mockMvc.perform(get("/tag/similar/tag")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		assertTrue(result1.contains("[]"));
 
-		// Get ID of that activity
-		String activityID = getAnActivityID();
-		
-		// Delete the activity
-		mockMvc.perform(post("/activity/delete").contentType(MediaType.APPLICATION_JSON).content(makeRequestBodyEmailJSON(activityID))).andExpect(status().isOk());
+		Activity activity = makeActivity(0);
+		activity.getTags().add(new Tag("tag1"));
+		activity.getTags().add(new Tag("tag2"));
+		activity.getTags().add(new Tag("tag3"));
+		activity.getTags().add(new Tag("hello World"));
+		activity.getTags().add(new Tag("ta_g"));
+
+		String activityStr = makeRequestBodyEmailJSON(activity);
+		mockMvc.perform(post("/activity").contentType(MediaType.APPLICATION_JSON).content(activityStr)).andExpect(status().isOk());
 		confirmAction();
 		
-		// make sure it got deleted
-		String result2 = mockMvc.perform(get("/activity")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		assertFalse(result2.contains(activityID));
+
+		String result2 = mockMvc.perform(get("/tag/similar/tag")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		assertTrue(result2.contains("tag1"));
+		assertTrue(result2.contains("tag2"));
+		assertTrue(result2.contains("tag3"));
+		assertFalse(result2.contains("hello World"));
 	}
-
-	@Test(timeout = 10000)
-	public void testUpdate_1() throws Exception {
-		String activity = makeRequestBodyEmailJSON(makeActivity(7));
-		String newActivity = makeRequestBodyEmailJSON(makeActivity(9));
-		// Add an activity
-		mockMvc.perform(post("/activity").contentType(MediaType.APPLICATION_JSON).content(activity)).andExpect(status().isOk());
-		confirmAction().andReturn().getResponse().getContentAsString();
-
-		// Get ID of that activity
-		String activityID = getAnActivityID();
-
-		// Update an activity
-		mockMvc.perform(put("/activity/" + activityID).contentType(MediaType.APPLICATION_JSON).content(newActivity)).andExpect(status().isOk());
-		confirmAction();
-		
-	}
-
-	//@Test(timeout = 10000)
-	public void testUpdate_2() throws Exception {
-		String newActivity = makeRequestBodyEmailJSON(makeActivity(6));
-
-		// Update an activity that does not exist
-		mockMvc.perform(put("/activity/" + "420024").contentType(MediaType.APPLICATION_JSON).content(newActivity)).andExpect(status().isOk());
-		confirmAction();
-		
-	}
-	
-//	@Test(expected = NullPointerException.class)
-	public void testCreate() throws Exception {
-		String activity = makeRequestBodyEmailJSON(makeActivity(-42));
-		mockMvc.perform(post("/activity").contentType(MediaType.APPLICATION_JSON).content(activity)).andExpect(status().isOk());
-		confirmAction();
-		
-	}
-
 }

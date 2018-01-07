@@ -58,11 +58,4 @@ public class TagController {
 		
 	}
 
-	// No delete, because tags are shared:
-	//@DeleteMapping("{id}")
-	//public void delete(@PathVariable Long id) {
-	//	tagRepository.delete(id);
-	//}
-
-
 }

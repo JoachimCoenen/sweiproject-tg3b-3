@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 @Entity
 public class RequestedAction {
-	public static final long defaultExpirationTime = 86400000 * 3; // 1 day has 86400000 ms;
+	public static final long defaultExpirationTime = 86400000l * 3; // 1 day has 86400000 ms;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
