@@ -58,24 +58,26 @@
 				</div>
 			</div>
 		</div>
-		<div class="website-content card" id="main">
+		<div class="website-content" id="main">
 			
 			<h3>Activities</h3>
-			<div class="activtylist" style="width:100%">
-				<div ng-repeat="activity in activities" class="activtylist-item">
+			<div class="activtylist full-width">
+				<div ng-repeat="activity in activities" class="activtylist-item card">
 				
 					<div class="activty-body">
-						<div style="width: 100%; height:100%; float:left">
-							<div class="activty-title" ng-click="viewActivity(activity)">{{activity.title}}</div>
-							<div class="activty-description" ng-click="viewActivity(activity)">{{activity.text}}</div>
-						</div>
+						<h4 class="activty-title" ng-click="viewActivity(activity)">{{activity.title}}</h4>
 						<div id="taglist" class="taglist" >
-							<a ng-repeat="tag in activity.tags" href="/tag/similar/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
+							<a class="taglist-item">{{activity.id}}</a>
+							<a class="taglist-item">{{activity.public}}</a>
+						</div>
+						<div class="activty-description" ng-click="viewActivity(activity)">{{activity.text}}</div>
+						<div id="taglist" class="taglist" >
+							<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
 						</div>
 					</div>
 					<div class="activty-controls">
-						<button class="mdl-button" ng-click="edit(activity)">edit</button>
-						<button class="mdl-button dangerous" ng-click="delete(activity)">delete</button>
+						<div><button class="mdl-button full-width" ng-click="edit(activity)">edit</button></div>
+						<div><button class="mdl-button dangerous full-width" ng-click="delete(activity)">delete</button></div>
 					</div>
 					
 				</div>

@@ -8,10 +8,11 @@
 	</div>
 	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--expandable mdl-textfield--full-width" style="width:100% !important">
 		<label class="mdl-textfield__label">Description:</label>
+		<!--div text-angular="text-angular" class="mdl-textfield__input" name="htmlcontent" ng-model="activity.text" ta-disabled='disabled'></div-->
 		<textarea class="mdl-textfield__input" ng-model="activity.text" size="100"></textarea>
 	</div>
 	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
-		<label class="mdl-textfield__label">Tags:</label>
+		<label class="mdl-textfield__label">Tags: (separated by comma)</label>
 		<div class="dropdown tags-dropdown" ng-controller="TagsInputCtrl" >
 			<input class="mdl-textfield__input" ng-model="activity.tags" ng-change="change()" size="40" />
 			<a class="dropdown-toggle invisible" data-toggle="dropdown">Hello, there</a>
@@ -19,6 +20,10 @@
 				<li ng-repeat="tag in tagProposals"><a tabindex="0" data-ng-click="addTag(tag)">{{tag.name}}</a></li>
 			</ul>
 		</div>
+	</div>
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
+		<label class="mdl-textfield__label">Your email:</label>
+		<input class="mdl-textfield__input" ng-model="emailAddress" size="40"/>
 	</div>
 </div>
 <div class="modal-footer">

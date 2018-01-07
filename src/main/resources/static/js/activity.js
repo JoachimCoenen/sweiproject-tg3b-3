@@ -1,11 +1,11 @@
 
 
 function isNullOrEmpty(str) {
-	return (str != null && str != "");
+	return (str == null || str == "");
 }
 
 function tagsToList (tagsString) {
-	if (isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
+	if (!isNullOrEmpty(tagsString) && tagsString.replace(/[a-zA-Z0-9]/) != null) {
 		// if tagsString contains any value && value is probably meaningfull, split string into tags.
 		tagsList = tagsString.split(",").map(function(str) { return { name : str.replace(/^ +| +$/g, '') }; });
 	} else {
@@ -18,6 +18,12 @@ function tagsToList (tagsString) {
 function tagsToString (tagsList) {
 	return tagsList.map(function(tag) { return tag.name; }).join(", ");
 }
+
+
+function prepareHTML($log) {
+	$('.taglist').html('<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>');
+}
+
 
 
 function loadActivities ($scope, $http){
@@ -81,23 +87,32 @@ function editActivity_bare(activity, $scope, $http, $dialog) {
 	});
 };
 
-function deleteActivity_bare(activity, $scope, $http, $dialog) {
+function deleteActivity_bare(activity, theEmailAddress, $scope, $http, $dialog) {
 		var deleteRequest = {
-			method : 'DELETE',
-			url: 'activity/' + activity.id
+			method : 'POST',
+			url: 'activity/delete',
+			data: {
+				data: activity.id,
+				emailAddress: theEmailAddress
+			}
 		};
 		
-		return $http(deleteRequest).then(function() {
+		return $http(deleteRequest).then(function (response) {
+			activity = response.data;
+		}).then(function() {
 			loadActivities($scope, $http);
 		});
 		//todo handle error
 	};
 
 
-//function initiateApp() {
-	var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+// $(document).ready(function(){
+//	prepareHTML();
+// });
 
-app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
+var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
+
+app.controller('ActivityCtrl', function ($scope, $http, $dialog, $log) {
 	loadActivities($scope, $http);
 	
 	$scope.viewActivity = function(activity){
@@ -119,7 +134,9 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog) {
 	};
 		
 	$scope.delete = function(activity) {
-		deleteActivity_bare(activity, $scope, $http, $dialog);
+		// TODO: promt for emailAddress!!
+		emailAddress = "TEST@test-test.com"
+		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog);
 	};
 });
 
@@ -134,7 +151,9 @@ app.controller('ViewActivityCtrl', function ($scope, $http, activity, $dialog, d
 	};
 	
 	$scope.delete = function(activity) {
-		deleteActivity_bare(activity, $scope, $http, $dialog).then(function () {
+		// TODO: promt for emailAddress!!
+		emailAddress = "TEST@test-test.com"
+		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog).then(function () {
 		dialog.close();
 		});
 	};
@@ -149,14 +168,17 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
 	$scope.activity = {};
 	$scope.save = function(Activity) {
 		var postRequest = {
-		method : 'POST',
-		url: 'activity' ,
-		data: {
-				text: $scope.activity.text,
-				tags: tagsToList($scope.activity.tags),
-				title: $scope.activity.title
-			  }
-		}  
+			method : 'POST',
+			url: 'activity' ,
+			data: {
+				data: {
+					text: $scope.activity.text,
+					tags: tagsToList($scope.activity.tags),
+					title: $scope.activity.title
+				},
+				emailAddress: $scope.emailAddress
+			}
+		};
 		
 		$http(postRequest).then(function (response) {
 			$scope.activities = response.data;
@@ -174,15 +196,17 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 	$scope.activity = activity;
 	$scope.save = function($activity) {
 		var putRequest = {
-		method : 'PUT',
-		url: 'activity/' + $scope.activity.id,
-		data: {
-				text: $scope.activity.text,
-				tags: tagsToList($scope.activity.tags),
-				title: $scope.activity.title
-			  }
-		}  
-		
+			method : 'PUT',
+			url: 'activity/' + $scope.activity.id,
+			data: {
+				data: {
+					text: $scope.activity.text,
+					tags: tagsToList($scope.activity.tags),
+					title: $scope.activity.title
+				 },
+				 emailAddress: $scope.emailAddress
+			}  
+		};
 		$http(putRequest).then(function (response) {
 			$scope.activities = response.data;
 		}).then(function () {
