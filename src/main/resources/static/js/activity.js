@@ -87,19 +87,19 @@ function editActivity_bare(activity, $scope, $http, $dialog) {
 	});
 };
 
-function deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog) {
+function deleteActivity_bare(activity, theEmailAddress, $scope, $http, $dialog) {
 		var deleteRequest = {
-			method : 'DELETE',
-			url: 'activity',
+			method : 'POST',
+			url: 'activity/delete',
 			data: {
-				data: {
-					id: activity.id
-				},
-				emailAddress: emailAddress
+				data: activity.id,
+				emailAddress: theEmailAddress
 			}
-		}
+		};
 		
-		return $http(deleteRequest).then(function() {
+		return $http(deleteRequest).then(function (response) {
+			activity = response.data;
+		}).then(function() {
 			loadActivities($scope, $http);
 		});
 		//todo handle error
@@ -175,7 +175,7 @@ app.controller('AddActivityCtrl', function($scope, $http, dialog){
 					text: $scope.activity.text,
 					tags: tagsToList($scope.activity.tags),
 					title: $scope.activity.title
-					},
+				},
 				emailAddress: $scope.emailAddress
 			}
 		};

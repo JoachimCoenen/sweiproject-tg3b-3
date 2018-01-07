@@ -3,7 +3,6 @@
  */
 package base.activitymeter;
 
-import base.activitymeter.RequestedAction.ActionID;
 
 /**
  * @author Joachim Coenen

@@ -40,14 +40,15 @@ public class ActivityController {
 
 		requestAction(request, input.getEmailAddress(), new RequestedAction(input.getData(), RequestedAction.ActionID.POST));
 		
-		return "CheckYourMail.html";
+		return "\"CheckYourMail.html\"";
 	}
 
-	@DeleteMapping()
-	public void delete(@RequestBody RequestBodyEmail<Activity> input, HttpServletRequest request) {
-		Activity activity = input.getData();
-		activity = activityRepository.findOne(activity.getId());
+	@PostMapping("delete")
+	public String delete(@RequestBody RequestBodyEmail<Long> input, HttpServletRequest request) {
+		long id = input.getData();
+		Activity activity = activityRepository.findOne(id);
 		requestAction(request, input.getEmailAddress(), new RequestedAction(activity, RequestedAction.ActionID.DELETE));
+		return "\"CheckYourMail.html\"";
 	}
 
 	@PutMapping("{id}")

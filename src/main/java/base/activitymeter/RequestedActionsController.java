@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-import base.Application;
-import net.minidev.json.JSONObject;
 
 /**
  * @author Joachim Coenen
