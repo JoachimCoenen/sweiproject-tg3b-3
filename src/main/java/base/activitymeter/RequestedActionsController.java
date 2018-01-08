@@ -43,7 +43,7 @@ public class RequestedActionsController {
 		});
 		
 		if (isSuccess) {
-			return "confirmActionSuccessfull.html";
+			return "index.html";
 		}
 		return "confirmActionFailed.html";
 	}

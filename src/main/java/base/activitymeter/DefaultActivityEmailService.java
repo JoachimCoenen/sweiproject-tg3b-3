@@ -37,8 +37,8 @@ public class DefaultActivityEmailService implements ActivityEmailService {
 		        .from(new InternetAddress(FROM_MAIL_ADDRESS))
 		        .replyTo(new InternetAddress(REPLY_TO_MAIL_ADDRESS))
 		        .to(Arrays.asList(new InternetAddress(mailAddress)))
-		        .subject("ias-se-se-se Confirmation of ")
-		        .body("Lorem ipsum dolor sit amet [...] " + link)
+		        .subject("ias-se-se-se Confirmation of Action")
+		        .body("To confirm your action (add, update, delete Activity) open the following link in your browser: " + link + "\r\n\r\n Your IAS-se-se-se")
 		        .encoding("UTF-8").build();
 		emailService.send(email);
 

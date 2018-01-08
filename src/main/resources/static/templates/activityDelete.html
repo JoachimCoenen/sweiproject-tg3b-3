@@ -1,0 +1,13 @@
+<div class="modal-header">
+	<h1>Delete '{{activity.title}}'</h1>
+</div>
+<div class="modal-body">
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
+		<label class="mdl-textfield__label">Do you really want to delete your activity? You cannot undo that!<br/>Your email:</label>
+		<input class="mdl-textfield__input" ng-model="emailAddress" size="40"/>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="mdl-button dangerous" ng-click="deleteActivity(activity)">Delete</button>
+	<button class="mdl-button" ng-click="close()">Cancel</button>
+</div>

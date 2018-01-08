@@ -87,28 +87,18 @@ function editActivity_bare(activity, $scope, $http, $dialog) {
 	});
 };
 
-function deleteActivity_bare(activity, theEmailAddress, $scope, $http, $dialog) {
-		var deleteRequest = {
-			method : 'POST',
-			url: 'activity/delete',
-			data: {
-				data: activity.id,
-				emailAddress: theEmailAddress
-			}
-		};
-		
-		return $http(deleteRequest).then(function (response) {
-			activity = response.data;
-		}).then(function() {
-			loadActivities($scope, $http);
-		});
-		//todo handle error
-	};
+var deleteDialogOptions = {
+	controller: 'DeleteActivityCtrl',
+	templateUrl: './templates/activityDelete.html',
+};
+function deleteActivity_bare(activity, $scope, $http, $dialog) {
+	var activityToDelete = angular.copy(activity);
+	return $dialog.dialog(angular.extend(deleteDialogOptions, {resolve: {activity: activityToDelete}})).open().then(function (){
+		loadActivities($scope, $http);
+	});
+};
 
 
-// $(document).ready(function(){
-//	prepareHTML();
-// });
 
 var app = angular.module('ActivityMeterApp', ['ui.bootstrap']);
 
@@ -133,10 +123,8 @@ app.controller('ActivityCtrl', function ($scope, $http, $dialog, $log) {
 		editActivity_bare(activity, $scope, $http, $dialog);
 	};
 		
-	$scope.delete = function(activity) {
-		// TODO: promt for emailAddress!!
-		emailAddress = "TEST@test-test.com"
-		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog);
+	$scope.delete = function(activity) {	
+		deleteActivity_bare(activity, $scope, $http, $dialog);
 	};
 });
 
@@ -151,9 +139,7 @@ app.controller('ViewActivityCtrl', function ($scope, $http, activity, $dialog, d
 	};
 	
 	$scope.delete = function(activity) {
-		// TODO: promt for emailAddress!!
-		emailAddress = "TEST@test-test.com"
-		deleteActivity_bare(activity, emailAddress, $scope, $http, $dialog).then(function () {
+		deleteActivity_bare(activity, $scope, $http, $dialog).then(function () {
 		dialog.close();
 		});
 	};
@@ -203,8 +189,33 @@ app.controller('EditActivityCtrl', function ($scope, $http, activity, dialog) {
 					text: $scope.activity.text,
 					tags: tagsToList($scope.activity.tags),
 					title: $scope.activity.title
-				 },
-				 emailAddress: $scope.emailAddress
+				},
+				emailAddress: $scope.emailAddress
+			}  
+		};
+		$http(putRequest).then(function (response) {
+			$scope.activities = response.data;
+		}).then(function () {
+			//todo handle error
+			$scope.close();
+		});
+	};
+
+	$scope.close = function(){
+		loadActivities($scope, $http);
+		dialog.close();
+	};
+});
+
+app.controller('DeleteActivityCtrl', function ($scope, $http, activity, dialog) {
+	$scope.activity = activity;
+	$scope.deleteActivity = function($activity) {
+		var putRequest = {
+			method : 'PUT',
+			url: 'activity/delete',
+			data: {
+				data: $scope.activity.id,
+				emailAddress: $scope.emailAddress
 			}  
 		};
 		$http(putRequest).then(function (response) {

@@ -3,6 +3,8 @@ package base.activitymeter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.google.common.primitives.UnsignedLong;
+
 import java.util.ArrayList;
 
 import javax.mail.internet.AddressException;
@@ -44,8 +46,8 @@ public class ActivityController {
 	}
 
 	@PostMapping("delete")
-	public String delete(@RequestBody RequestBodyEmail<Long> input, HttpServletRequest request) {
-		long id = input.getData();
+	public String delete(@RequestBody RequestBodyEmail<UnsignedLong> input, HttpServletRequest request) {
+		long id = input.getData().longValue();
 		Activity activity = activityRepository.findOne(id);
 		requestAction(request, input.getEmailAddress(), new RequestedAction(activity, RequestedAction.ActionID.DELETE));
 		return "\"CheckYourMail.html\"";

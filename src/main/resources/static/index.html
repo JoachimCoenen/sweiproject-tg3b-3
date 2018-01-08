@@ -30,11 +30,9 @@
 
 <body>
 <div ng-controller="ActivityCtrl">
-	<div id="topnav" class="topnav" style="height:36px">
+	<!--div id="topnav" class="topnav" style="height:36px">
 		<div style="width:100%">
 			<div class="card left">
-				<a href="/html/default.asp" title="HTML Tutorial" class="topnav-item">html</a>
-				<a href="/css/default.asp" title="CSS Tutorial" class="topnav-item active">CSS</a>
 			</div>
 			<div class="card right">
 				<a href="/about.html" class="topnav-item">About</a>
@@ -42,7 +40,7 @@
 				<a href="/privacyPolicy.html" class="topnav-item">Privacy policy</a>
 			</div>
 		</div>
-	</div>
+	</div-->
 	
 	<div class="website-body">
 		
@@ -66,10 +64,6 @@
 				
 					<div class="activty-body">
 						<h4 class="activty-title" ng-click="viewActivity(activity)">{{activity.title}}</h4>
-						<div id="taglist" class="taglist" >
-							<a class="taglist-item">{{activity.id}}</a>
-							<a class="taglist-item">{{activity.public}}</a>
-						</div>
 						<div class="activty-description" ng-click="viewActivity(activity)">{{activity.text}}</div>
 						<div id="taglist" class="taglist" >
 							<a ng-repeat="tag in activity.tags" href="/tag/{{tag.name}}" class="taglist-item">&#35;{{tag.name}}</a>
