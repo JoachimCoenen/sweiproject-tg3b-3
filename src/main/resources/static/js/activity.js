@@ -29,11 +29,6 @@ function prepareHTML($log) {
 function loadActivities ($scope, $http){
 	return $http({
 		 method : 'GET',
-		 /*
-		 url: (window.location.hostname === 'localhost' ?
-				'http://localhost:8080/activity' :
-				'https://activityexample.herokuapp.com/activity')
-		 */
 		 url: 'tag'
 				
 		}).then(function (response) {
@@ -211,7 +206,7 @@ app.controller('DeleteActivityCtrl', function ($scope, $http, activity, dialog) 
 	$scope.activity = activity;
 	$scope.deleteActivity = function($activity) {
 		var putRequest = {
-			method : 'PUT',
+			method : 'POST',
 			url: 'activity/delete',
 			data: {
 				data: $scope.activity.id,
